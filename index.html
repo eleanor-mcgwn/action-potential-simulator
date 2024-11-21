@@ -1,1 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Action Potential Simulator</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <h1>Action Potential Simulator</h1>
+    <div id="controls">
+      <label for="stimulus">Stimulus Intensity: </label>
+      <input type="range" id="stimulus" min="0" max="100" value="50">
+      <span id="stimulusValue">50</span>
+    </div>
+    <div id="plot"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
 
