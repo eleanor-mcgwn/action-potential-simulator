@@ -9,15 +9,31 @@
 </head>
 <body>
   <div id="app">
-    <h1>Action Potential Simulator</h1>
+    <h1>Neuron Clamp Simulator</h1>
     <div id="controls">
-      <label for="stimulus">Stimulus Intensity: </label>
-      <input type="range" id="stimulus" min="0" max="100" value="50">
-      <span id="stimulusValue">50</span>
+      <h2>Settings</h2>
+      <div>
+        <label for="clampMode">Mode:</label>
+        <select id="clampMode">
+          <option value="voltage">Voltage Clamp</option>
+          <option value="current">Current Clamp</option>
+        </select>
+      </div>
+      <div id="voltageClampControls">
+        <label for="voltage">Set Voltage (mV):</label>
+        <input type="range" id="voltage" min="-80" max="40" value="-70">
+        <span id="voltageValue">-70</span>
+      </div>
+      <div id="currentClampControls" style="display: none;">
+        <label for="current">Inject Current (nA):</label>
+        <input type="range" id="current" min="0" max="10" value="0">
+        <span id="currentValue">0</span>
+      </div>
     </div>
-    <div id="plot"></div>
+    <canvas id="plot"></canvas>
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+
 
