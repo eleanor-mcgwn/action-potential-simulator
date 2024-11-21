@@ -6,9 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentValue = document.getElementById("currentValue");
   const voltageClampControls = document.getElementById("voltageClampControls");
   const currentClampControls = document.getElementById("currentClampControls");
-  const ctx = document.getElementById('plot').getContext('2d');
-
-  let chart = null;
+  const plotDiv = document.getElementById("plot");
 
   // Function to simulate voltage clamp
   function voltageClamp(voltage) {
@@ -52,57 +50,51 @@ document.addEventListener("DOMContentLoaded", () => {
     return { time, voltage };
   }
 
-  // Function to update chart
-  function updateChart(data, label, yLabel) {
-    if (chart) chart.destroy();
+  // Function to update plot with Plotly
+  function updatePlot(data, yLabel, mode) {
+    const trace = {
+      x: data.time,
+      y: mode === "voltage" ? data.current : data.voltage,
+      type: 'scatter',
+      mode: 'lines',
+      name: mode === "voltage" ? 'Current (nA)' : 'Voltage (mV)',
+      line: { color: 'rgb(44, 160, 44)', width: 2 }
+    };
 
-    chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: data.time,
-        datasets: [{
-          label: label,
-          data: data[label.toLowerCase()],
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderWidth: 2,
-          pointRadius: 0,
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: { title: { display: true, text: 'Time (ms)' } },
-          y: { title: { display: true, text: yLabel } }
-        }
-      }
-    });
+    const layout = {
+      title: mode === "voltage" ? 'Voltage Clamp: Current vs Time' : 'Current Clamp: Voltage vs Time',
+      xaxis: { title: 'Time (ms)' },
+      yaxis: { title: yLabel },
+      margin: { t: 50, r: 30, b: 50, l: 60 }
+    };
+
+    Plotly.newPlot(plotDiv, [trace], layout);
   }
 
-  // Event Listeners
+  // Event listeners
   modeSelector.addEventListener("change", () => {
     if (modeSelector.value === "voltage") {
       voltageClampControls.style.display = "block";
       currentClampControls.style.display = "none";
+      const data = voltageClamp(parseFloat(voltageInput.value));
+      updatePlot(data, 'Current (nA)', "voltage");
     } else {
       voltageClampControls.style.display = "none";
       currentClampControls.style.display = "block";
+      const data = currentClamp(parseFloat(currentInput.value));
+      updatePlot(data, 'Voltage (mV)', "current");
     }
   });
 
   voltageInput.addEventListener("input", () => {
     voltageValue.textContent = voltageInput.value;
     const data = voltageClamp(parseFloat(voltageInput.value));
-    updateChart(data, "Current", "Current (nA)");
+    updatePlot(data, 'Current (nA)', "voltage");
   });
 
   currentInput.addEventListener("input", () => {
     currentValue.textContent = currentInput.value;
     const data = currentClamp(parseFloat(currentInput.value));
-    updateChart(data, "Voltage", "Voltage (mV)");
+    updatePlot(data, 'Voltage (mV)', "current");
   });
 
-  // Initialize with Voltage Clamp
-  const initialData = voltageClamp(parseFloat(voltageInput.value));
-  updateChart(initialData, "Current", "Current (nA)");
-});
