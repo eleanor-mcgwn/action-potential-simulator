@@ -1,37 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neuron Clamp Simulator</title>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Action Potential Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </head>
 <body>
-  <div id="app">
-    <h1>Neuron Clamp Simulator V1</h1>
-    <div id="controls">
-      <h2>Settings</h2>
-      <div>
-        <label for="clampMode">Mode:</label>
-        <select id="clampMode">
-          <option value="voltage">Voltage Clamp</option>
-          <option value="current">Current Clamp</option>
-        </select>
+    <div class="container text-center">
+        <h1>Neural Action Potential Simulation</h1>
+
+        <div class="container text-center">
+            <div class="row align-items-start">
+              <div class="col">
+                
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Control Panel</h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">Alter parameters and observe changes to voltage</h6>
+                      
+
+                      <div class="row align-items-start">
+                        <div class="controls">
+                            <label for="currentSlider">External Current (µA/cm²):</label>
+                            <input type="range" id="currentSlider" min="-10" max="100" value="10">
+                            <span id="currentValue">10</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="gNaSlider">Sodium Conductance (gNa):</label>
+                            <input type="range" id="gNaSlider" min="0" max="200" value="120">
+                            <span id="gNaValue">120</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="gKSlider">Potassium Conductance (gK):</label>
+                            <input type="range" id="gKSlider" min="0" max="200" value="36">
+                            <span id="gKValue">36</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="gLSlider">Leak Conductance (gL):</label>
+                            <input type="range" id="gLSlider" min="0" max="10" value="0.3" step="0.1">
+                            <span id="gLValue">0.3</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="ENaSlider">Sodium Reversal Potential (ENa):</label>
+                            <input type="range" id="ENaSlider" min="0" max="100" value="50">
+                            <span id="ENaValue">50</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="EKSlider">Potassium Reversal Potential (EK):</label>
+                            <input type="range" id="EKSlider" min="-100" max="0" value="-77">
+                            <span id="EKValue">-77</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="ELSlider">Leak Reversal Potential (EL):</label>
+                            <input type="range" id="ELSlider" min="-100" max="0" value="-54.4">
+                            <span id="ELValue">-54.4</span>
+                        </div>
+                        
+                        <div class="controls">
+                            <label for="CSlider">Capacitance (C):</label>
+                            <input type="range" id="CSlider" min="0.5" max="2" value="1" step="0.1">
+                            <span id="CValue">1</span>
+                        </div>
+                        <div class="controls">
+                            <button type = "button" class="btn btn-primary" id="resetButton">Reset</button>
+                        </div>
+                    </div>
+                
+
+                    </div>
+                  </div>
+              </div>
+              <div class="col">
+
+                        <div id="simulationArea">
+                            <canvas id="simulationCanvas"></canvas>
+                        </div>
+                        <div class="info">
+                            <p>Voltage (mV): <span id="voltageValue">-65</span></p>
+                        </div>
+
+
+              </div>
+            </div>
+          </div>
+
+       
+        </div>
       </div>
-      <div id="voltageClampControls">
-        <label for="voltage">Set Voltage (mV):</label>
-        <input type="range" id="voltage" min="-80" max="40" value="-70">
-        <span id="voltageValue">-70</span>
-      </div>
-      <div id="currentClampControls" style="display: none;">
-        <label for="current">Inject Current (nA):</label>
-        <input type="range" id="current" min="0" max="10" value="0">
-        <span id="currentValue">0</span>
-      </div>
+    <div class="container">
+        
     </div>
-    <div id="plot"></div>
-  </div>
-  <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
