@@ -33,65 +33,27 @@ let interSpikeInterval = 0;
 
 let isPaused = false;
 
+
 function setup() {
     let canvas = createCanvas(600, 400);
     canvas.parent('simulationArea');
 
-    select('#currentValue').html(externalCurrent);
-    select('#gNaValue').html(gNa);
-    select('#gKValue').html(gK);
-    select('#gLValue').html(gL);
-    select('#ENaValue').html(ENa);
-    select('#EKValue').html(EK);
-    select('#ELValue').html(EL);
-    select('#CValue').html(C);
+    updateUI();
 
-    const currentSlider = select('#currentSlider');
-    currentSlider.input(() => {
-        externalCurrent = currentSlider.value();
-        select('#currentValue').html(externalCurrent);
-    });
+    const sliders = [
+        { id: '#currentSlider', value: externalCurrent, callback: updateExternalCurrent },
+        { id: '#gNaSlider', value: gNa, callback: updateGNa },
+        { id: '#gKSlider', value: gK, callback: updateGK },
+        { id: '#gLSlider', value: gL, callback: updateGL },
+        { id: '#ENaSlider', value: ENa, callback: updateENa },
+        { id: '#EKSlider', value: EK, callback: updateEK },
+        { id: '#ELSlider', value: EL, callback: updateEL },
+        { id: '#CSlider', value: C, callback: updateC },
+    ];
 
-    const gNaSlider = select('#gNaSlider');
-    gNaSlider.input(() => {
-        gNa = gNaSlider.value();
-        select('#gNaValue').html(gNa);
-    });
-
-    const gKSlider = select('#gKSlider');
-    gKSlider.input(() => {
-        gK = gKSlider.value();
-        select('#gKValue').html(gK);
-    });
-
-    const gLSlider = select('#gLSlider');
-    gLSlider.input(() => {
-        gL = gLSlider.value();
-        select('#gLValue').html(gL);
-    });
-
-    const ENaSlider = select('#ENaSlider');
-    ENaSlider.input(() => {
-        ENa = ENaSlider.value();
-        select('#ENaValue').html(ENa);
-    });
-
-    const EKSlider = select('#EKSlider');
-    EKSlider.input(() => {
-        EK = EKSlider.value();
-        select('#EKValue').html(EK);
-    });
-
-    const ELSlider = select('#ELSlider');
-    ELSlider.input(() => {
-        EL = ELSlider.value();
-        select('#ELValue').html(EL);
-    });
-
-    const CSlider = select('#CSlider');
-    CSlider.input(() => {
-        C = CSlider.value();
-        select('#CValue').html(C);
+    sliders.forEach(slider => {
+        const element = select(slider.id);
+        element.input(slider.callback);
     });
 
     frameRate(60);
@@ -100,13 +62,20 @@ function setup() {
     resetButton.mousePressed(reset);
 }
 
+function updateUI() {
+    select('#currentValue').html(externalCurrent);
+    select('#gNaValue').html(gNa);
+    select('#gKValue').html(gK);
+    select('#gLValue').html(gL);
+    select('#ENaValue').html(ENa);
+    select('#EKValue').html(EK);
+    select('#ELValue').html(EL);
+    select('#CValue').html(C);
+}
+
 function togglePause() {
     isPaused = !isPaused;
-    if (isPaused) {
-        select('#pauseButton').html('<i class="bi bi-play-circle"></i> Play');
-    } else {
-        select('#pauseButton').html('<i class="bi bi-pause-circle"></i> Pause');
-    }
+    select('#pauseButton').html(isPaused ? '<i class="bi bi-play-circle"></i> Play' : '<i class="bi bi-pause-circle"></i> Pause');
 }
 
 function reset() {
@@ -138,14 +107,63 @@ function reset() {
     lastSpikeTime = 0;
     interSpikeInterval = 0;
 
-    select('#currentSlider').value(externalCurrent);
-    select('#gNaSlider').value(gNa);
-    select('#gKSlider').value(gK);
-    select('#gLSlider').value(gL);
-    select('#ENaSlider').value(ENa);
-    select('#EKSlider').value(EK);
-    select('#ELSlider').value(EL);
-    select('#CSlider').value(C);
+    updateUI();
+
+    const slidersAndValues = [
+        { slider: '#currentSlider', value: externalCurrent },
+        { slider: '#gNaSlider', value: gNa },
+        { slider: '#gKSlider', value: gK },
+        { slider: '#gLSlider', value: gL },
+        { slider: '#ENaSlider', value: ENa },
+        { slider: '#EKSlider', value: EK },
+        { slider: '#ELSlider', value: EL },
+        { slider: '#CSlider', value: C },
+    ];
+
+    slidersAndValues.forEach(item => {
+        const slider = select(item.slider);
+        slider.value(item.value);
+    });
+}
+
+function updateExternalCurrent() {
+    externalCurrent = select('#currentSlider').value();
+    select('#currentValue').html(externalCurrent);
+}
+
+function updateGNa() {
+    gNa = select('#gNaSlider').value();
+    select('#gNaValue').html(gNa);
+}
+
+function updateGK() {
+    gK = select('#gKSlider').value();
+    select('#gKValue').html(gK);
+}
+
+function updateGL() {
+    gL = select('#gLSlider').value();
+    select('#gLValue').html(gL);
+}
+
+function updateENa() {
+    ENa = select('#ENaSlider').value();
+    select('#ENaValue').html(ENa);
+}
+
+function updateEK() {
+    EK = select('#EKSlider').value();
+    select('#EKValue').html(EK);
+}
+
+function updateEL() {
+    EL = select('#ELSlider').value();
+    select('#ELValue').html(EL);
+}
+
+function updateC() {
+    C = select('#CSlider').value();
+    select('#CValue').html(C);
 }
 
 function draw() {
@@ -204,6 +222,17 @@ function draw() {
         voltageTrace.shift();
     }
 
+    drawVoltageTrace();
+
+    select('#voltageValue').html(voltage.toFixed(2));
+    select('#peakAmplitude').html(peakAmplitude.toFixed(2) + " mV");
+    select('#actionPotentialWidth').html(actionPotentialWidth.toFixed(2) + " ms");
+    select('#interSpikeInterval').html(interSpikeInterval.toFixed(2) + " ms");
+
+    time += dt;
+}
+
+function drawVoltageTrace() {
     stroke(0);
     line(50, 10, 50, height - 10);
 
@@ -225,11 +254,6 @@ function draw() {
         vertex(i + 50, y);
     }
     endShape();
-
-    select('#voltageValue').html(voltage.toFixed(2));
-    select('#peakAmplitude').html(peakAmplitude.toFixed(2) + " mV");
-    select('#actionPotentialWidth').html(actionPotentialWidth.toFixed(2) + " ms");
-    select('#interSpikeInterval').html(interSpikeInterval.toFixed(2) + " ms");
-
-    time += dt;
 }
+
+

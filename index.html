@@ -157,8 +157,16 @@
             
 
           </div>
+
           
           </div>
+          <br>
+          <div class="text-muted small text-justify" style="text-align: justify; max-width: 400px; margin: auto;">
+            This interactive Hodgkin-Huxley neuron simulation models neuronal electrical activity and action potential generation. Users can adjust ion conductances (<code>g<sub>Na</sub>, g<sub>K</sub>, g<sub>L</sub></code>), reversal potentials (<code>E<sub>Na</sub>, E<sub>K</sub>, E<sub>L</sub></code>), membrane capacitance, and external current to explore their impact on firing. Real-time voltage traces and metrics like peak amplitude, action potential width, and inter-spike intervals offer insights into neuronal dynamics, making this an ideal educational tool for the biophysical mechanisms of neural activity.
+          </div>
+          
+
+          
  
 
       </div>
@@ -168,7 +176,12 @@
           <div class="card-body">
 
             <div id="simulationArea">
-              <h5 class="card-title">Waveform</h5>
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Waveform</h5>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#explanModal">
+                  <i class="bi bi-question"></i>
+                </button>
+              </div>
               <div class="container mt-4">
                 <div class="row">
                   <div class="col-md-3">
@@ -180,7 +193,7 @@
             
                   <div class="col-md-3">
                     <div class="parameter">
-                      <label>Spike Amplitude: </label>
+                      <label>Peak Amplitude: </label>
                       <span id="peakAmplitude">N/A</span>
                     </div>
                   </div>
@@ -208,7 +221,58 @@
         </div>
       </div>
     </div>  
-  </div>     
+  </div>   
+
+  <div class="modal fade" id="explanModal" tabindex="-1" aria-labelledby="explanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="explanModalLabel">Metrics</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container mt-4">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="assets/peak.jpg" class="card-img-top" alt="Image 1">
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Peak Amplitude</h5>
+                    <p class="card-text flex-grow-1">The highest voltage reached during the action potential.</p>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="assets/dur.jpg" class="card-img-top" alt="Image 2">
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Spike Duration</h5>
+                    <p class="card-text flex-grow-1">(Action Potential Width) The time from when the voltage first exceeds the threshold (-20mV) to when it falls back below it.</p>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="assets/isi.jpg" class="card-img-top" alt="Image 3">
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Inter-Spike Interval</h5>
+                    <p class="card-text flex-grow-1">The time between the end of one spike and the start of the next spike.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 
     <!-- <footer class="navbar navbar-dark bg-dark">
